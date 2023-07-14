@@ -6,10 +6,7 @@ import com.github.weisj.darklaf.theme.DarculaTheme;
 import com.latte.hb.view.ScrollableLogview;
 import com.latte.hb.view.tools.ToolBox;
 
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import java.awt.BorderLayout;
 import java.io.IOException;
@@ -18,17 +15,29 @@ import java.nio.file.Path;
 
 public class MainFrame {
 
-    public static void main(String[] args) throws IOException, RuntimeException, BadLocationException {
+    public static void main(String[] args) throws IOException, RuntimeException {
         LafManager.install(new DarculaTheme());
 
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(3);
 
-        JPanel wrapper = new JPanel(new BorderLayout());
+        var tabs = new JTabbedPane();
 
-        var text = new String(Files.readAllBytes(Path.of(args[0])));
+        for (String a : args) {
+            var path = Path.of(a);
+            var text = new String(Files.readAllBytes(path));
+            tabs.add(path.toFile().getName(), createWrapper(text));
+        }
+
+        frame.setContentPane(tabs);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    private static JPanel createWrapper(String text) {
         var slv = new ScrollableLogview(text);
 
+        JPanel wrapper = new JPanel(new BorderLayout());
         wrapper.add(slv, BorderLayout.CENTER);
 
         JPanel toolBoxWrapper = new JPanel(new BorderLayout());
@@ -47,10 +56,7 @@ public class MainFrame {
         toolBoxWrapper.add(toolBoxHider, BorderLayout.EAST);
 
         wrapper.add(toolBoxWrapper, BorderLayout.EAST);
-
-        frame.setContentPane(wrapper);
-        frame.pack();
-        frame.setVisible(true);
+        return wrapper;
     }
 
 }
