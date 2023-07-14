@@ -6,13 +6,13 @@ import com.github.weisj.darklaf.theme.DarculaTheme;
 import com.latte.hb.view.ScrollableLogview;
 import com.latte.hb.view.tools.ToolBox;
 
-import javax.swing.*;
-import javax.swing.border.LineBorder;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.text.BadLocationException;
-import java.awt.*;
-import java.io.File;
+import java.awt.BorderLayout;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 

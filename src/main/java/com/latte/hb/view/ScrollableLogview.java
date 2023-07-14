@@ -17,6 +17,8 @@ public class ScrollableLogview extends JScrollPane implements MessageSubscriber 
 
     public ScrollableLogview(String text) {
         logview = new Logview(text);
+//        var noWrapPanel = new JPanel(new BorderLayout());
+//        noWrapPanel.add(logview, BorderLayout.CENTER);
         setViewportView(logview);
 
         MessageBus.INSTANCE.subscribe(MessageType.SEARCH, this);

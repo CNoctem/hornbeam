@@ -1,24 +1,15 @@
 package com.latte.hb.view;
 
-import com.latte.hb.MainFrame;
-
 import javax.swing.JTextPane;
+import javax.swing.JViewport;
+import javax.swing.SwingUtilities;
 import javax.swing.text.*;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.GraphicsEnvironment;
+import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Arrays;
 
 public class Logview extends JTextPane {
 
@@ -30,6 +21,15 @@ public class Logview extends JTextPane {
     public Logview(String text) {
         this.text = text;
         init();
+    }
+
+      @Override
+    public boolean getScrollableTracksViewportWidth() {
+          Container parent = SwingUtilities.getUnwrappedParent(this);
+          if (parent instanceof JViewport) {
+              return parent.getWidth() > getLongestLineWidth();
+          }
+          return false;
     }
 
     private void init() {
@@ -50,7 +50,6 @@ public class Logview extends JTextPane {
         }
 
 
-
         setBackground(new Color(43,43,43));
         try {
             final StyleContext cont = StyleContext.getDefaultStyleContext();
@@ -62,6 +61,8 @@ public class Logview extends JTextPane {
 
             document = new DefaultStyledDocument();
 
+
+
             document.insertString(0, text, defaultAttribute);
             setDocument(document);
         } catch (BadLocationException e) {
@@ -69,5 +70,25 @@ public class Logview extends JTextPane {
         }
     }
 
+    private int getLongestLineWidth() {
+        return (int) ijFont
+                .getStringBounds(
+                        getLongestLine(),
+                        ((Graphics2D)getGraphics())
+                                .getFontRenderContext())
+                .getWidth();
+    }
+
+    private String getLongestLine() {
+        int max = 0;
+        String str = "";
+        for (String l : text.split(System.lineSeparator())) {
+            if (l.length() > max) {
+                max = l.length();
+                str = l;
+            }
+        }
+        return str;
+    }
 
 }
