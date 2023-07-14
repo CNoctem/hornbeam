@@ -22,8 +22,11 @@ public class ScrollableLogview extends JScrollPane implements MessageSubscriber 
         MessageBus.INSTANCE.subscribe(MessageType.SEARCH, this);
     }
 
-    public void search(String s, Color hilite) {
-        Pattern pattern = Pattern.compile(s, Pattern.CASE_INSENSITIVE);
+    public void search(String s, Color hilite, boolean caseSensitive) {
+        Pattern pattern = caseSensitive ?
+                Pattern.compile(s) :
+                Pattern.compile(s, Pattern.CASE_INSENSITIVE);
+        
         Matcher matcher = pattern.matcher(logview.getText());
         while (matcher.find()) {
             final StyleContext cont = StyleContext.getDefaultStyleContext();
@@ -61,6 +64,8 @@ public class ScrollableLogview extends JScrollPane implements MessageSubscriber 
 
     @Override
     public void messageReceived(Message m) {
-        search(m.content, (Color) m.getAttribute("color"));
+        search(m.content,
+                (Color) m.getAttribute("color"),
+                (boolean) m.getAttribute("case"));
     }
 }

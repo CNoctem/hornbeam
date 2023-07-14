@@ -26,6 +26,8 @@ public class SearchPane extends JPanel {
     private JButton prevBtn = new JButton("<");
     private JButton nextBtn = new JButton(">");
 
+    private JToggleButton caseSensitiveBtn = new JToggleButton("cs");
+
     public SearchPane() {
         var l = new BoxLayout(this, BoxLayout.LINE_AXIS);
         setLayout(l);
@@ -34,8 +36,10 @@ public class SearchPane extends JPanel {
         colorBtn.setForeground(Color.ORANGE);
         add(findBtn);
 
-        add(prevBtn);
-        add(nextBtn);
+//        add(prevBtn);
+//        add(nextBtn);
+
+        add (caseSensitiveBtn);
 
         add(addBtn);
         add(removeBtn);
@@ -61,6 +65,7 @@ public class SearchPane extends JPanel {
     private void find() {
         var msg = new Message(MessageType.SEARCH, tx.getText());
         msg.addAttribute("color", colorBtn.getForeground());
+        msg.addAttribute("case", caseSensitiveBtn.isSelected());
         MessageBus.INSTANCE.publish(msg);
     }
 
