@@ -26,7 +26,7 @@ public class MainFrame {
 
         JPanel wrapper = new JPanel(new BorderLayout());
 
-        var text = new String(Files.readAllBytes(Path.of("/home/gerger/tmp/new2.txt")));
+        var text = new String(Files.readAllBytes(Path.of(args[0])));
         var slv = new ScrollableLogview(text);
 
         wrapper.add(slv, BorderLayout.CENTER);
